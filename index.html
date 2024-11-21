@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Cinta LED</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        input, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #resultado {
+            background-color: #e0e0e0;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Cinta LED</h1>
+    <input type="number" id="metros" placeholder="Metros lineales de cinta LED">
+    <input type="number" id="voltaje" placeholder="Voltaje (12V o 24V)">
+    <button onclick="calcularAmperajeyWatts()">Calcular</button>
+    <div id="resultado"></div>
+
+    <script>
+        function calcularAmperajeyWatts() {
+            try {
+                // Obtener valores de los inputs
+                const metros_led = parseFloat(document.getElementById('metros').value);
+                const voltaje = parseFloat(document.getElementById('voltaje').value);
+
+                // Validar entradas
+                if (isNaN(metros_led) || isNaN(voltaje)) {
+                    throw new Error('Ingrese valores válidos');
+                }
+
+                // Calcular watts y amperaje
+                const watts_totales = metros_led * voltaje;
+                const amperaje_requerido = watts_totales / voltaje;
+
+                // Mostrar resultados
+                const resultadoDiv = document.getElementById('resultado');
+                resultadoDiv.innerHTML = `
+                    <h3>Resultado:</h3>
+                    <p>Potencia total en watts: ${watts_totales.toFixed(2)}W</p>
+                    <p>Amperaje requerido: ${amperaje_requerido.toFixed(2)}A</p>
+                `;
+            } catch (error) {
+                const resultadoDiv = document.getElementById('resultado');
+                resultadoDiv.innerHTML = `<p style="color: red;">${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
