@@ -55,6 +55,7 @@
     <h1>Calculadora de Cinta LED</h1>
     <input type="number" id="metros" placeholder="Metros lineales de cinta LED">
     <input type="number" id="consumo" placeholder="Consumo cinta LED 9.6 - 14.4 (W/m)">
+    <input type="number" id="voltaje" placeholder="Voltaje (V)" value="12">
     <button onclick="calcularAmperajeyWatts()">Calcular</button>
     <div id="resultado"></div>
     <script>
@@ -62,19 +63,21 @@
             try {
                 const metros_led = parseFloat(document.getElementById('metros').value);
                 const consumo_por_metro = parseFloat(document.getElementById('consumo').value);
+                const voltaje = parseFloat(document.getElementById('voltaje').value) || 12; // Usar valor ingresado o 12V por defecto
                 
-                if (isNaN(metros_led) || isNaN(consumo_por_metro)) {
-                    throw new Error('Ingrese valores válidos');
+                if (isNaN(metros_led) || isNaN(consumo_por_metro) || isNaN(voltaje) || voltaje <= 0) {
+                    throw new Error('Ingrese valores válidos (el voltaje debe ser mayor que 0)');
                 }
                 
                 const watts_totales = metros_led * consumo_por_metro;
-                const amperaje_requerido = watts_totales / 12; // Asumiendo voltaje estándar de 12V
+                const amperaje_requerido = watts_totales / voltaje; // Usando el voltaje ingresado por el usuario
                 
                 const resultadoDiv = document.getElementById('resultado');
                 resultadoDiv.innerHTML = `
                     <h3>Resultado:</h3>
                     <p>Potencia total en watts: ${watts_totales.toFixed(2)}W</p>
                     <p>Amperaje requerido: ${amperaje_requerido.toFixed(2)}A</p>
+                    <p>Voltaje utilizado: ${voltaje}V</p>
                 `;
             } catch (error) {
                 const resultadoDiv = document.getElementById('resultado');
